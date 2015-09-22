@@ -3759,4 +3759,11 @@ char *G_SHA1(const char *str);
 //
 void drawExt();
 
+//
+// cg_mainext.cpp
+//
+qboolean CG_ConsoleCommandExt(const char *cmd);
+void CG_DrawActiveFrameExt();
+
+
 #endif // CG_LOCAL_H

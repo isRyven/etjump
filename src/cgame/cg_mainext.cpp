@@ -1,3 +1,5 @@
+#include "trickjump_lines.hpp"
+
 extern "C" {
 #include "cg_mainext.h"
 }
@@ -5,7 +7,9 @@ extern "C" {
 #include <memory>
 #include "cg_timerun.h"
 
+// This could be done in a better way :P
 static std::unique_ptr<Timerun> timerun;
+static std::unique_ptr<TrickjumpLines> trickjumpLines;
 
 /**
  * Initializes the CPP side of client
@@ -13,6 +17,7 @@ static std::unique_ptr<Timerun> timerun;
 void InitGame()
 {
 	timerun = std::unique_ptr<Timerun>(new Timerun(cg.clientNum));
+	trickjumpLines = std::unique_ptr<TrickjumpLines>(new TrickjumpLines);
 }
 
 /**
@@ -100,4 +105,47 @@ qboolean CG_ServerCommandExt(const char *cmd)
 	}
 
 	return qfalse;
+}
+
+/**
+ * Checks if the command exists and calls the handler
+ * @param cmd The command to be matched
+ * @returns qboolean Whether a match was found
+ */
+qboolean CG_ConsoleCommandExt(const char *cmd)
+{
+	std::string command = cmd ? cmd : "";
+
+	// TODO: could just make an array out of this and go thru it
+	if (command == "tjl_record")
+	{
+		auto argc = trap_Argc();
+
+		if (argc == 1)
+		{
+			trickjumpLines->record(nullptr);
+		} else
+		{
+			auto name = CG_Argv(1);
+			trickjumpLines->record(name);
+		}
+		
+		return qtrue;
+	}
+
+	if (command == "tjl_stoprecord")
+	{
+		trickjumpLines->stopRecord();
+
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
+// And this prolly should be elsewhere (e.g. cg_view_ext.cpp) but I'll just go with this one
+// for now.. :P
+void CG_DrawActiveFrameExt()
+{
+	trickjumpLines->addPosition(cg.refdef.vieworg);
 }

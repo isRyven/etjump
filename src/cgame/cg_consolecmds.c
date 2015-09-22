@@ -1371,6 +1371,8 @@ qboolean CG_ConsoleCommand(void)
 		}
 	}
 
+	return CG_ConsoleCommandExt(cmd);
+
 	return qfalse;
 }
 
@@ -1501,4 +1503,6 @@ void CG_InitConsoleCommands(void)
 	trap_AddCommand("records");
 	trap_AddCommand("times");
 	trap_AddCommand("ranks");
+	trap_AddCommand("tjl_record");
+	trap_AddCommand("tjl_stoprecord");
 }

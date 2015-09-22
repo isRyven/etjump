@@ -2310,6 +2310,8 @@ void CG_DrawActiveFrame(int serverTime, stereoFrame_t stereoView, qboolean demoP
 		CG_Printf("cg.clientFrame:%i\n", cg.clientFrame);
 	}
 
+	CG_DrawActiveFrameExt();
+
 	DEBUGTIME
 
 	// let the client system know what our weapon, holdable item and zoom settings are
