@@ -818,10 +818,10 @@ void G_FireteamRace(int clientNum)
 	G_ClientPrintAndReturn(clientNum, "Fireteam races are not supported yet.");
 
 	trap_Argv(2, arg, sizeof(arg));
-	if (!Q_stricmp(arg, "start"))
+	/*if (!Q_stricmp(arg, "start"))
 	{
 		StartRace(g_entities + clientNum);
-	}
+	}*/
 }
 
 void G_SetFireTeamRules(int clientNum)

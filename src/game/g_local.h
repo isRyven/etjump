@@ -2759,7 +2759,7 @@ qboolean G_MapExists(const char *map);
 const char *GetRandomMap();
 const char *GetRandomMapByType(const char *customType);
 qboolean AdminCommandCheck(gentity_t *ent);
-void StartRace(gentity_t *ent);
+//void StartRace(gentity_t *ent);
 const char *CustomMapTypeExists(const char *mapType);
 void CheckIfOperationsNeedToBeExecuted();
 void ClientNameChanged(gentity_t *ent);

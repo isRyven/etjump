@@ -183,3 +183,4 @@ src/cmake
 src/build
 src/.idea/*
 src/.idea
+*.vcxproj

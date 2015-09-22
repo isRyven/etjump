@@ -148,4 +148,7 @@ qboolean CG_ConsoleCommandExt(const char *cmd)
 void CG_DrawActiveFrameExt()
 {
 	trickjumpLines->addPosition(cg.refdef.vieworg);
+		
+	if (trickjumpLines->countRoute() > 0 && !trickjumpLines->getRecording())
+		trickjumpLines->displayCurrentRoute(trickjumpLines->countRoute() - 1);
 }
