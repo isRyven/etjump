@@ -31,11 +31,11 @@ void TrickjumpLines::addPosition(vec3_t pos)
 	{
 		std::array<float, 3> vec;
 		vec[0] = pos[0];
-		vec[2] = pos[1];
-		vec[1] = pos[2];
+		vec[1] = pos[1];
+		vec[2] = pos[2];
 
 		_currentRoute.nodes.push_back(std::move(vec));
-		_nextAddTime = cg.time + FRAMETIME; // 10 times a sec
+		_nextAddTime = cg.time + 50; // 20 times a sec
 		// Should be a cvar, just for quick example
 	}
 }
@@ -66,6 +66,7 @@ void TrickjumpLines::displayCurrentRoute(int x)
 	}*/
 	
 	//addTrickjumpRecursiveBezier(_routes[x].nodes, red, 8.0, 150);
+	addTrickjumpLines(_routes[x].nodes, blue, 8);
 
 	vec3_t start, end;  	
 	VectorCopy(_routes[x].nodes[0], start);
@@ -73,8 +74,6 @@ void TrickjumpLines::displayCurrentRoute(int x)
 
 	addJumpIndicator(start, orange, 10.0);
 	addJumpIndicator(end , orange, 10.0);
-
-	CG_Printf("Last TJL %d nodes\n", _routes[x].nodes.size());
 }
 
 // gcd_ui, use in Binomial coefficient function.
