@@ -41,6 +41,7 @@ void TrickjumpLines::record(const char *name)
 
 void TrickjumpLines::addPosition(vec3_t pos)
 {
+<<<<<<< HEAD
 	if (_recording)
 	{		
 		// Check if player is currently in air	
@@ -93,6 +94,19 @@ void TrickjumpLines::addPosition(vec3_t pos)
 			// TODO : Should be a cvar, just for quick example
 		}	
 	}	
+=======
+	if (_recording && cg.time > _nextAddTime)
+	{
+		std::array<float, 3> vec;
+		vec[0] = pos[0];
+		vec[1] = pos[1];
+		vec[2] = pos[2];
+
+		_currentRoute.nodes.push_back(std::move(vec));
+		_nextAddTime = cg.time + 50; // 20 times a sec
+		// Should be a cvar, just for quick example
+	}
+>>>>>>> a851271abd49f62a8dbaa64227671cf0d4703547
 }
 
 void TrickjumpLines::stopRecord()
@@ -119,6 +133,7 @@ void TrickjumpLines::displayCurrentRoute(int x)
 			
 	for (auto i = 0; i < nbTrails; i++)
 	{
+<<<<<<< HEAD
 		// Get current trail into tmp var.
 		std::vector<Node> cTrail = _routes[x].trails[i];
 		int nbPoints = cTrail.size();
@@ -155,6 +170,20 @@ void TrickjumpLines::displayCurrentRoute(int x)
 			addJumpIndicator(start, _green, 10.0);
 		}		
 	}		
+=======
+		CG_Printf("%f %f %f\n", vec[0], vec[1], vec[2]);
+	}*/
+	
+	//addTrickjumpRecursiveBezier(_routes[x].nodes, red, 8.0, 150);
+	addTrickjumpLines(_routes[x].nodes, blue, 8);
+
+	vec3_t start, end;  	
+	VectorCopy(_routes[x].nodes[0], start);
+	VectorCopy(_routes[x].nodes[_routes[x].nodes.size() - 1], start);
+
+	addJumpIndicator(start, orange, 10.0);
+	addJumpIndicator(end , orange, 10.0);
+>>>>>>> a851271abd49f62a8dbaa64227671cf0d4703547
 }
 
 // gcd_ui, use in Binomial coefficient function.
