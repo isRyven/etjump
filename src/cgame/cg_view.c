@@ -2217,10 +2217,7 @@ void CG_DrawActiveFrame(int serverTime, stereoFrame_t stereoView, qboolean demoP
 			DEBUGTIME
 
 			CG_AddAtmosphericEffects();
-<<<<<<< HEAD
 
-=======
->>>>>>> a851271abd49f62a8dbaa64227671cf0d4703547
 			CG_DrawActiveFrameExt();
 		}
 
@@ -2315,10 +2312,6 @@ void CG_DrawActiveFrame(int serverTime, stereoFrame_t stereoView, qboolean demoP
 		CG_Printf("cg.clientFrame:%i\n", cg.clientFrame);
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> a851271abd49f62a8dbaa64227671cf0d4703547
 	DEBUGTIME
 
 	// let the client system know what our weapon, holdable item and zoom settings are

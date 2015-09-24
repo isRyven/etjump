@@ -41,9 +41,8 @@ void TrickjumpLines::record(const char *name)
 
 void TrickjumpLines::addPosition(vec3_t pos)
 {
-<<<<<<< HEAD
 	if (_recording)
-	{		
+	{
 		// Check if player is currently in air	
 		if ((cg.predictedPlayerState.stats[STAT_USERCMD_MOVE] & UMOVE_UP) && (_jumpRelease))
 		{
@@ -92,21 +91,8 @@ void TrickjumpLines::addPosition(vec3_t pos)
 
 			_nextAddTime = cg.time + 50; // 20 times a sec // FRAMETIME = 10 times a sec.
 			// TODO : Should be a cvar, just for quick example
-		}	
-	}	
-=======
-	if (_recording && cg.time > _nextAddTime)
-	{
-		std::array<float, 3> vec;
-		vec[0] = pos[0];
-		vec[1] = pos[1];
-		vec[2] = pos[2];
-
-		_currentRoute.nodes.push_back(std::move(vec));
-		_nextAddTime = cg.time + 50; // 20 times a sec
-		// Should be a cvar, just for quick example
+		}
 	}
->>>>>>> a851271abd49f62a8dbaa64227671cf0d4703547
 }
 
 void TrickjumpLines::stopRecord()
@@ -114,12 +100,12 @@ void TrickjumpLines::stopRecord()
 	std::vector<Node> trail;
 	trail = std::move(_currentTrail);
 	_currentTrail.clear();
-	
+
 	_currentRoute.trails.push_back(trail);
 
 	_recording = false;
 	_routes.push_back(_currentRoute);
-	
+
 	CG_Printf("Stopped recording: %s\n", _currentRoute.name.c_str());
 	CG_Printf("Total of trail in this route : %d\n", _currentRoute.trails.size());
 
@@ -127,17 +113,16 @@ void TrickjumpLines::stopRecord()
 }
 
 void TrickjumpLines::displayCurrentRoute(int x)
-{		
+{
 	// Loop on every trail into the route.
 	int nbTrails = _routes[x].trails.size();
-			
+
 	for (auto i = 0; i < nbTrails; i++)
 	{
-<<<<<<< HEAD
 		// Get current trail into tmp var.
 		std::vector<Node> cTrail = _routes[x].trails[i];
 		int nbPoints = cTrail.size();
-		
+
 		// Add the bezier curve of this trail.
 		//addTrickjumpRecursiveBezier(cTrail, _blue, _routes[x].width, 150);
 		addTrickjumpLines(cTrail, _blue, _routes[x].width);
@@ -155,35 +140,21 @@ void TrickjumpLines::displayCurrentRoute(int x)
 		}
 		// Check if it is the first curve of the route.
 		else if (i == 0)
-		{	
+		{
 			addJumpIndicator(start, _orange, 10.0);
 		}
 		// Check if it is the last curve of the route.
 		else if (i == _routes[x].trails.size() - 1)
 		{
-			addJumpIndicator(start, _green , 10.0);
+			addJumpIndicator(start, _green, 10.0);
 			addJumpIndicator(end, _orange, 10.0);
-		}		
+		}
 		// If any another curve of the route.
 		else
 		{
 			addJumpIndicator(start, _green, 10.0);
-		}		
-	}		
-=======
-		CG_Printf("%f %f %f\n", vec[0], vec[1], vec[2]);
-	}*/
-	
-	//addTrickjumpRecursiveBezier(_routes[x].nodes, red, 8.0, 150);
-	addTrickjumpLines(_routes[x].nodes, blue, 8);
-
-	vec3_t start, end;  	
-	VectorCopy(_routes[x].nodes[0], start);
-	VectorCopy(_routes[x].nodes[_routes[x].nodes.size() - 1], start);
-
-	addJumpIndicator(start, orange, 10.0);
-	addJumpIndicator(end , orange, 10.0);
->>>>>>> a851271abd49f62a8dbaa64227671cf0d4703547
+		}
+	}
 }
 
 // gcd_ui, use in Binomial coefficient function.
@@ -251,7 +222,7 @@ void TrickjumpLines::draw4VertexLine(vec3_t start, vec3_t end, float width, vec4
 
 	// Obtain Up vector, base on player location
 	GetPerpendicularViewVector(cg.refdef_current->vieworg, start, end, up);
-	
+
 	// 1 vertex
 	VectorMA(start, 0.5 * width, up, pDraw);
 	VectorCopy(pDraw, verts[cIdx].xyz);
@@ -302,59 +273,51 @@ void TrickjumpLines::draw4VertexLine(vec3_t start, vec3_t end, float width, vec4
 	// Divide in Tri.
 	for (k = 0, numOutVerts = 0; k < 4; k += 4)
 	{
-		VectorCopy(verts[k].xyz, mid.xyz);
-		mid.st[0] = verts[k].st[0];
-		mid.st[1] = verts[k].st[1];
-
-		for (l = 0; l < 4; l++)
-		{
-			mod[l] = (float)verts[k].modulate[l];
-		}
-
-		for (n = 1; n < 4; n++)
-		{
-			VectorAdd(verts[k + n].xyz, mid.xyz, mid.xyz);
-			mid.st[0] += verts[k + n].st[0];
-			mid.st[1] += verts[k + n].st[1];
-
-			for (l = 0; l < 4; l++)
-			{
-				mod[l] += (float)verts[k + n].modulate[l];
-			}
-
-		}
-
-		VectorScale(mid.xyz, 0.25, mid.xyz);
-		mid.st[0] *= 0.25;
-		mid.st[1] *= 0.25;
-
-		for (l = 0; l < 4; l++)
-		{
-			mid.modulate[l] = (unsigned char)(mod[l] / 4.0);
-		}
-
-		// now output the tri's
-		for (n = 0; n < 4; n++)
-		{
-			outVerts[numOutVerts++] = verts[k + n];
-			outVerts[numOutVerts++] = mid;
-			if (n < 3)
-			{
-				outVerts[numOutVerts++] = verts[k + n + 1];
-			}
-			else
-			{
-				outVerts[numOutVerts++] = verts[k];
-			}
-		}
+	VectorCopy(verts[k].xyz, mid.xyz);
+	mid.st[0] = verts[k].st[0];
+	mid.st[1] = verts[k].st[1];
+	for (l = 0; l < 4; l++)
+	{
+	mod[l] = (float)verts[k].modulate[l];
+	}
+	for (n = 1; n < 4; n++)
+	{
+	VectorAdd(verts[k + n].xyz, mid.xyz, mid.xyz);
+	mid.st[0] += verts[k + n].st[0];
+	mid.st[1] += verts[k + n].st[1];
+	for (l = 0; l < 4; l++)
+	{
+	mod[l] += (float)verts[k + n].modulate[l];
+	}
+	}
+	VectorScale(mid.xyz, 0.25, mid.xyz);
+	mid.st[0] *= 0.25;
+	mid.st[1] *= 0.25;
+	for (l = 0; l < 4; l++)
+	{
+	mid.modulate[l] = (unsigned char)(mod[l] / 4.0);
+	}
+	// now output the tri's
+	for (n = 0; n < 4; n++)
+	{
+	outVerts[numOutVerts++] = verts[k + n];
+	outVerts[numOutVerts++] = mid;
+	if (n < 3)
+	{
+	outVerts[numOutVerts++] = verts[k + n + 1];
+	}
+	else
+	{
+	outVerts[numOutVerts++] = verts[k];
+	}
+	}
 	} // End tri
-
 	for (k = 0; k < numOutVerts / 3; k++)
 	{
-		trap_R_AddPolyToScene(cgs.media.railCoreShader, 3, &outVerts[k * 3]);
+	trap_R_AddPolyToScene(cgs.media.railCoreShader, 3, &outVerts[k * 3]);
 	}
 	*/
-	
+
 	return;
 }
 
@@ -370,7 +333,7 @@ void TrickjumpLines::addTrickjumpRecursiveBezier(std::vector< Node > points, vec
 	int i, l;
 	vec3_t zeros = { 0.0, 0.0, 0.0 };
 	int n = points.size();
-	
+
 	if (n < 2)
 	{
 		if (nextPrintTime < cg.time)
@@ -388,7 +351,7 @@ void TrickjumpLines::addTrickjumpRecursiveBezier(std::vector< Node > points, vec
 
 	// Hold previous point on each iter (start)
 	vec3_t prev;
-	VectorCopy(points[0].coor, prev);	
+	VectorCopy(points[0].coor, prev);
 
 	// Divide bezier line into nbDivision points
 	for (i = 0; i < nbDivision; i++)
@@ -452,7 +415,7 @@ void TrickjumpLines::addTrickjumpLines(std::vector< Node > points, vec4_c color,
 		VectorCopy(points[i + 1].coor, e);
 
 		// Draw line between previous and finalp with trap_R_AddPolyToScene.
-		draw4VertexLine(s,e, width, color);
+		draw4VertexLine(s, e, width, color);
 	}
 
 	return;
@@ -492,7 +455,7 @@ void TrickjumpLines::addJumpIndicator(vec3_t point, vec4_c color, float quadSize
 			verts[i].modulate[k] = (unsigned char)color[k];
 		}
 	}
-	
+
 	VectorAdd(point, maxs, corners[3]);
 
 	VectorCopy(corners[3], corners[2]);
@@ -518,5 +481,5 @@ void TrickjumpLines::addJumpIndicator(vec3_t point, vec4_c color, float quadSize
 	VectorCopy(corners[1], verts[1].xyz);
 	VectorCopy(corners[2], verts[2].xyz);
 	VectorCopy(corners[3], verts[3].xyz);
-	trap_R_AddPolyToScene(cgs.media.sparkParticleShader, 4, verts);	
+	trap_R_AddPolyToScene(cgs.media.sparkParticleShader, 4, verts);
 }
