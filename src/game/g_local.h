@@ -540,7 +540,6 @@ struct gentity_s
 
 	float velocityLowerLimit;
 	float velocityUpperLimit;
-
 };
 
 // Ridah
@@ -1008,6 +1007,9 @@ struct gclient_s
 	int last8BallTime;             // Last level.time client used !8ball.
 	int lastVoteTime;
 	qboolean cheatDetected;
+
+	// Whether the client already activated a trigger or not
+	qboolean alreadyActivatedTrigger;
 };
 
 typedef struct
