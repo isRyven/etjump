@@ -162,3 +162,17 @@ gfx/keyset/key_prone_not_pressed
 	}
 }
 
+sfx/token
+{ 
+     cull none 
+     deformVertexes wave 1 sin -0.5 0 0 1
+     noPicmip 
+     surfaceparm trans 
+     { 
+          map sfx/token.tga 
+          blendFunc GL_SRC_ALPHA GL_ONE 
+          rgbGen vertex
+          tcGen environment 
+          tcMod scroll 0.025 -0.07625 
+     } 
+}

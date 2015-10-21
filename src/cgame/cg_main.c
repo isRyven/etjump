@@ -2419,6 +2419,9 @@ static void CG_RegisterGraphics(void)
 	cgs.media.portal_blueShader = trap_R_RegisterShader("gfx/misc/portal_blueShader");                //trap_R_RegisterShader( "gfx/misc/electricity_portal2" );
 	cgs.media.portal_redShader  = trap_R_RegisterShader("gfx/misc/portal_redShader");                //Change to red later...
 
+	// Register token shader
+	cgs.media.tokenShader = trap_R_RegisterShader("sfx/token");
+
 	CG_LoadingString(" - game media done");
 }
 

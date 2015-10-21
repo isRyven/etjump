@@ -9,7 +9,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerDebuggerType>NativeOnly</LocalDebuggerDebuggerType>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>
-    <LocalDebuggerCommandArguments>+connect localhost:35000</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>+set fs_game "etjump" +devmap oasis</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>D:\Modding\ET\</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
 </Project>

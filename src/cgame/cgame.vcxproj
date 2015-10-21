@@ -143,6 +143,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>cmd /c PowerShell -ExecutionPolicy Unrestricted -NoProfile -File C:\Users\haapa\Documents\GitHub\etjump\src\debug-copy.ps1</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\game\bg_animation.c" />

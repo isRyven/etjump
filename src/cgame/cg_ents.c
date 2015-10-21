@@ -2851,23 +2851,28 @@ static void CG_PortalGate(centity_t *cent)
 #define TOKEN_DIFFICULTY_EASY 0
 #define TOKEN_DIFFICULTY_MEDIUM 1
 #define TOKEN_DIFFICULTY_HARD 2
-static vec4_t clrRed = { 255, 0, 0, 255 };
-static vec4_t clrGreen = { 0, 255, 0, 255 };
-static vec4_t clrOrange = { 128, 128, 0, 255 };
+static vec4_t clrRed = { 255, 0, 0, 128 };
+static vec4_t clrGreen = { 0, 255, 0, 128 };
+static vec4_t clrOrange = { 255, 255, 0, 128 };
 static void CG_TokenMarker(centity_t *cent, int difficulty)
 {
 	static int nextPrintTime = 0;
 	int i, k;
 	float quadSize = 16;
 	vec3_t point;
-	vec3_t mins = { -quadSize, -quadSize, 0 };
-	vec3_t maxs = { quadSize, quadSize, 0 };
+	vec3_t mins = { -quadSize, -quadSize, -quadSize };
+	vec3_t maxs = { quadSize, quadSize, quadSize };
 	float extx, exty, extz;
 	polyVert_t verts[4];
 	vec3_t corners[8];
-	VectorCopy(cent->lerpOrigin, point);
 	vec4_t color;
+	qhandle_t shader = cgs.media.tokenShader;
+	VectorCopy(cent->lerpOrigin, point);
 
+	point[0] = (int)(point[0]);
+	point[1] = (int)(point[1]);
+	point[2] = (int)(point[2]);
+	
 	switch (difficulty)
 	{
 	case TOKEN_DIFFICULTY_EASY:
@@ -2929,7 +2934,37 @@ static void CG_TokenMarker(centity_t *cent, int difficulty)
 	VectorCopy(corners[1], verts[1].xyz);
 	VectorCopy(corners[2], verts[2].xyz);
 	VectorCopy(corners[3], verts[3].xyz);
-	trap_R_AddPolyToScene(cgs.media.sparkParticleShader, 4, verts);
+	trap_R_AddPolyToScene(shader, 4, verts);
+	// bottom
+	VectorCopy(corners[7], verts[0].xyz);
+	VectorCopy(corners[6], verts[1].xyz);
+	VectorCopy(corners[5], verts[2].xyz);
+	VectorCopy(corners[4], verts[3].xyz);
+	trap_R_AddPolyToScene(shader, 4, verts);
+	// top side
+	VectorCopy(corners[3], verts[0].xyz);
+	VectorCopy(corners[2], verts[1].xyz);
+	VectorCopy(corners[6], verts[2].xyz);
+	VectorCopy(corners[7], verts[3].xyz);
+	trap_R_AddPolyToScene(shader, 4, verts);
+	// left side
+	VectorCopy(corners[2], verts[0].xyz);
+	VectorCopy(corners[1], verts[1].xyz);
+	VectorCopy(corners[5], verts[2].xyz);
+	VectorCopy(corners[6], verts[3].xyz);
+	trap_R_AddPolyToScene(shader, 4, verts);
+	// right side
+	VectorCopy(corners[0], verts[0].xyz);
+	VectorCopy(corners[3], verts[1].xyz);
+	VectorCopy(corners[7], verts[2].xyz);
+	VectorCopy(corners[4], verts[3].xyz);
+	trap_R_AddPolyToScene(shader, 4, verts);
+	// bottom side
+	VectorCopy(corners[1], verts[0].xyz);
+	VectorCopy(corners[0], verts[1].xyz);
+	VectorCopy(corners[4], verts[2].xyz);
+	VectorCopy(corners[5], verts[3].xyz);
+	trap_R_AddPolyToScene(shader, 4, verts);
 }
 
 /*
