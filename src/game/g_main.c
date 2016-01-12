@@ -2121,6 +2121,8 @@ void G_InitGame(int levelTime, int randomSeed, int restart)
 	G_spawnPrintf(DP_MVSPAWN, level.time + 2000, NULL);
 
 	OnGameInit();
+
+	ETJump_initializeGame(levelTime, randomSeed, restart);
 }
 
 
@@ -2132,7 +2134,7 @@ G_ShutdownGame
 */
 void G_ShutdownGame(int restart)
 {
-
+	ETJump_shutdownGame(restart);
 	OnGameShutdown();
 
 	// Arnout: gametype latching
@@ -4147,6 +4149,8 @@ uebrgpiebrpgibqeripgubeqrpigubqifejbgipegbrtibgurepqgbn%i", level.time)
 	}
 
 	RunFrame(levelTime);
+
+	ETJump_runFrame(levelTime);
 
 #ifdef SAVEGAME_SUPPORT
 	// Check if we are reloading, and times have expired

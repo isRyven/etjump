@@ -184,6 +184,8 @@
     <ClCompile Include="commands.cpp" />
     <ClCompile Include="custom_map_votes.cpp" />
     <ClCompile Include="database.cpp" />
+    <ClCompile Include="etj_game_client.cpp" />
+    <ClCompile Include="etj_user_session.cpp" />
     <ClCompile Include="g_active.c" />
     <ClCompile Include="g_alarm.c" />
     <ClCompile Include="g_antilag.c" />
@@ -197,6 +199,7 @@
     <ClCompile Include="g_items.c" />
     <ClCompile Include="g_main.c" />
     <ClCompile Include="banner.cpp" />
+    <ClCompile Include="etj_main.cpp" />
     <ClCompile Include="g_match.c" />
     <ClCompile Include="g_mem.c" />
     <ClCompile Include="g_misc.c" />
@@ -235,7 +238,7 @@
     <ClCompile Include="timerun.cpp" />
     <ClCompile Include="tokens.cpp" />
     <ClCompile Include="user.cpp" />
-    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def" />
@@ -252,6 +255,9 @@
     <ClInclude Include="commands.hpp" />
     <ClInclude Include="custom_map_votes.hpp" />
     <ClInclude Include="database.hpp" />
+    <ClInclude Include="etj_common.hpp" />
+    <ClInclude Include="etj_game_client.hpp" />
+    <ClInclude Include="etj_user_session.hpp" />
     <ClInclude Include="game.hpp" />
     <ClInclude Include="g_local.h" />
     <ClInclude Include="g_local.hpp" />
@@ -265,7 +271,6 @@
     <ClInclude Include="g_team.h" />
     <ClInclude Include="iauthentication.hpp" />
     <ClInclude Include="levels.hpp" />
-    <ClInclude Include="load_race.hpp" />
     <ClInclude Include="map_statistics.hpp" />
     <ClInclude Include="motd.hpp" />
     <ClInclude Include="q_shared.h" />

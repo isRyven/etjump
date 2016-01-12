@@ -2807,4 +2807,12 @@ void RunFrame(int levelTime);
 void UpdateRandomMapInterval(int interval);
 const char *G_MatchOneMap(const char *arg);
 
+// etj_main.cpp
+void ETJump_initializeGame(int levelTime, int randomSeed, int restart);
+void ETJump_runFrame(int levelTime);
+void ETJump_shutdownGame(int restart);
+const char *ETJump_clientConnect(int clientNum, int firstTime);
+void ETJump_clientDisconnect(int clientNum);
+int ETJump_clientCommand(int clientNum, const char *command);
+
 #endif // G_LOCAL_H

@@ -4790,6 +4790,12 @@ void ClientCommand(int clientNum)
 	//  //  HWIDReceived(ent);
 	//}
 
+	// FIXME: This should be changed
+	// handle new session system commands but
+	// do not return as we want to pass them to
+	// the original session system
+	ETJump_clientCommand(clientNum, cmd);
+
 	if (OnClientCommand(ent))
 	{
 		return;

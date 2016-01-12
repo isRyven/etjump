@@ -1692,6 +1692,8 @@ char *ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 	// set a bit later
 	OnClientConnect(clientNum, firstTime, isBot);
 
+	ETJump_clientConnect(clientNum, firstTime);
+
 	// IP filtering
 	// https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=500
 	// recommanding PB based IP / GUID banning, the builtin system is pretty limited
@@ -2431,6 +2433,7 @@ void ClientDisconnect(int clientNum)
 	}
 
 	OnClientDisconnect(ent);
+	ETJump_clientDisconnect(clientNum);
 	G_RemoveClientFromFireteams(clientNum, qtrue, qfalse);
 	G_RemoveFromAllIgnoreLists(clientNum);
 	G_LeaveTank(ent, qfalse);
