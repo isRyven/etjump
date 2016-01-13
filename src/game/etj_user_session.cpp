@@ -11,16 +11,6 @@ ETJump::UserSession::UserSession()
 }
 
 
-void ETJump::UserSession::shutdown()
-{
-	// save the session data for each active client
-	for (auto i = 0; i < level.numConnectedClients; ++i)
-	{
-		auto clientNum = level.sortedClients[i];
-		saveSessionData(clientNum);
-	}
-}
-
 ETJump::Result ETJump::UserSession::authenticate(int clientNum)
 {
 	assert(clientNum >= 0 && clientNum < MAX_CLIENTS);
@@ -155,4 +145,10 @@ void ETJump::UserSession::requestGuid(int clientNum)
 
 ETJump::UserSession::~UserSession()
 {
+	// save the session data for each active client
+	for (auto i = 0; i < level.numConnectedClients; ++i)
+	{
+		auto clientNum = level.sortedClients[i];
+		saveSessionData(clientNum);
+	}
 }

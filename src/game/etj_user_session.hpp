@@ -12,6 +12,8 @@ namespace ETJump
 	{
 	public:
 		UserSession();
+
+		// saves the session data of all users
 		~UserSession();
 
 		// returns a kick reason if the player should be dropped from the server
@@ -27,8 +29,6 @@ namespace ETJump
 		// returns Result.ok == false if failed
 		Result authenticate(int clientNum);
 
-		// saves session data of all clients
-		void shutdown();
 	private:
 		// loads the previous session data (from previous map etc.) when map changes
 		void loadSession(int clientNum);

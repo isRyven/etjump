@@ -184,7 +184,9 @@
     <ClCompile Include="commands.cpp" />
     <ClCompile Include="custom_map_votes.cpp" />
     <ClCompile Include="database.cpp" />
+    <ClCompile Include="etj_file_utilities.cpp" />
     <ClCompile Include="etj_game_client.cpp" />
+    <ClCompile Include="etj_user_database.cpp" />
     <ClCompile Include="etj_user_session.cpp" />
     <ClCompile Include="g_active.c" />
     <ClCompile Include="g_alarm.c" />
@@ -256,7 +258,9 @@
     <ClInclude Include="custom_map_votes.hpp" />
     <ClInclude Include="database.hpp" />
     <ClInclude Include="etj_common.hpp" />
+    <ClInclude Include="etj_file_utilities.hpp" />
     <ClInclude Include="etj_game_client.hpp" />
+    <ClInclude Include="etj_user_database.hpp" />
     <ClInclude Include="etj_user_session.hpp" />
     <ClInclude Include="game.hpp" />
     <ClInclude Include="g_local.h" />
