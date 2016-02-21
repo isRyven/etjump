@@ -1,6 +1,13 @@
 #include "etj_game_client.hpp"
+#include "etj_user_dao.hpp"
 
-ETJump::GameClient::GameClient(): _authenticated(false), _guid(""), _hwid(""), _ip("")
+ETJump::GameClient::GameClient(IUserAuthorization* userAuthorization): 
+	_authenticated(false), 
+	_guid(""), 
+	_hwid(""), 
+	_ip(""), 
+	_userAuthorization(userAuthorization), 
+	_persistentInformation(_userAuthorization->dummy())
 {
 }
 
@@ -10,6 +17,11 @@ std::string ETJump::GameClient::sessionString() const
 	return _guid + " " + _hwid;
 }
 
+
+void ETJump::GameClient::updateName(const std::string& name)
+{
+	_name = name;
+}
 
 bool ETJump::GameClient::authenticated() const
 {
@@ -32,22 +44,30 @@ bool ETJump::GameClient::loadSession(const char* sessionString)
 	if (!guid)
 	{
 		throw "ERROR: Could not load GUID from session information. GUID was NULL.";
-	} 
+	}
 	if (!hwid)
 	{
 		throw "ERROR: Could not load hardware ID from session information. Hardware ID was NULL.";
 	}
 
-	authenticate(guid, hwid);
+	// name was updated prior to session load cal
+	authenticate(_name, guid, hwid);
 	return true;
 }
 
 
-void ETJump::GameClient::authenticate(const std::string& guid, const std::string& hardwareId)
+void ETJump::GameClient::authorize()
+{
+	_persistentInformation = _userAuthorization->authorize(_name, _guid, _hwid);
+}
+
+void ETJump::GameClient::authenticate(const std::string& name, const std::string& guid, const std::string& hardwareId)
 {
 	_authenticated = true;
+	_name = name;
 	_guid = guid;
 	_hwid = hardwareId;
+	authorize();
 }
 
 void ETJump::GameClient::preAuthenticate(const std::string& ip)

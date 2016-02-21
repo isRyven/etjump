@@ -11,6 +11,7 @@
 #include "map_statistics.hpp"
 #include "Utilities.h"
 #include "tokens.hpp"
+#include "old_user_database.hpp"
 
 typedef boost::function<bool (gentity_t *ent, Arguments argv)> Command;
 typedef std::pair<boost::function<bool (gentity_t *ent, Arguments argv)>, char> AdminCommandPair;

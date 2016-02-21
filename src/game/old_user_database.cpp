@@ -1,33 +1,33 @@
-#include "database.hpp"
+#include "old_user_database.hpp"
 #include "utilities.hpp"
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 
-Database::Database()
+OldUserDatabase::OldUserDatabase()
 {
 
 }
 
-Database::~Database()
+OldUserDatabase::~OldUserDatabase()
 {
 }
 
-Database::IdIterator Database::GetUser(unsigned id) const
-{
-	return users_.get<0>().find(id);
-}
-
-Database::ConstIdIterator Database::GetUserConst(unsigned id) const
+OldUserDatabase::IdIterator OldUserDatabase::GetUser(unsigned id) const
 {
 	return users_.get<0>().find(id);
 }
 
-Database::GuidIterator Database::GetUser(std::string const& guid) const
+OldUserDatabase::ConstIdIterator OldUserDatabase::GetUserConst(unsigned id) const
+{
+	return users_.get<0>().find(id);
+}
+
+OldUserDatabase::GuidIterator OldUserDatabase::GetUser(std::string const& guid) const
 {
 	return users_.get<1>().find(guid);
 }
 
-bool Database::PrepareStatement(const char *query, sqlite3_stmt **stmt)
+bool OldUserDatabase::PrepareStatement(const char *query, sqlite3_stmt **stmt)
 {
 	unsigned rc = sqlite3_prepare_v2(db_, query, -1, stmt, 0);
 
@@ -40,7 +40,7 @@ bool Database::PrepareStatement(const char *query, sqlite3_stmt **stmt)
 	return true;
 }
 
-bool Database::BindInt(sqlite3_stmt *stmt, int index, int val)
+bool OldUserDatabase::BindInt(sqlite3_stmt *stmt, int index, int val)
 {
 	int rc = sqlite3_bind_int(stmt, index, val);
 	if (rc != SQLITE_OK)
@@ -51,7 +51,7 @@ bool Database::BindInt(sqlite3_stmt *stmt, int index, int val)
 	return true;
 }
 
-bool Database::BindString(sqlite3_stmt *stmt, int index, const std::string& val)
+bool OldUserDatabase::BindString(sqlite3_stmt *stmt, int index, const std::string& val)
 {
 	int rc = sqlite3_bind_text(stmt, index, val.c_str(), val.length(), SQLITE_STATIC);
 	if (rc != SQLITE_OK)
@@ -62,7 +62,7 @@ bool Database::BindString(sqlite3_stmt *stmt, int index, const std::string& val)
 	return true;
 }
 
-bool Database::AddBanToSQLite(Ban ban)
+bool OldUserDatabase::AddBanToSQLite(Ban ban)
 {
 	AddBanOperation *addBan = new AddBanOperation(ban);
 	addBan->RunAndDeleteObject();
@@ -101,7 +101,7 @@ bool Database::AddBanToSQLite(Ban ban)
 //    return true;
 }
 
-bool Database::AddUserToSQLite(User user)
+bool OldUserDatabase::AddUserToSQLite(User user)
 {
 	InsertUserOperation *insert = new InsertUserOperation(user);
 	insert->RunAndDeleteObject();
@@ -144,7 +144,7 @@ bool Database::AddUserToSQLite(User user)
 //    return true;
 }
 
-unsigned Database::GetHighestFreeId() const
+unsigned OldUserDatabase::GetHighestFreeId() const
 {
 	// if it's empty, let's start from 1
 	if (users_.get<0>().empty())
@@ -154,7 +154,7 @@ unsigned Database::GetHighestFreeId() const
 	return users_.get<0>().rbegin()->get()->id + 1;
 }
 
-bool Database::UserExists(std::string const& guid)
+bool OldUserDatabase::UserExists(std::string const& guid)
 {
 	ConstGuidIterator user = GetUserConst(guid);
 	if (user != GuidIterEnd())
@@ -192,7 +192,7 @@ bool Database::UserExists(std::string const& guid)
 //    return true;
 //}
 
-bool Database::UserInfo(gentity_t *ent, int id)
+bool OldUserDatabase::UserInfo(gentity_t *ent, int id)
 {
 	ConstIdIterator user = GetUserConst(id);
 
@@ -223,7 +223,7 @@ bool Database::UserInfo(gentity_t *ent, int id)
 	return true;
 }
 
-bool Database::ListUsers(gentity_t *ent, int page)
+bool OldUserDatabase::ListUsers(gentity_t *ent, int page)
 {
 	const int USERS_PER_PAGE = 20;
 	int       size           = users_.size();
@@ -262,7 +262,7 @@ bool Database::ListUsers(gentity_t *ent, int page)
 	return true;
 }
 
-bool Database::RemoveBanFromSQLite(unsigned id)
+bool OldUserDatabase::RemoveBanFromSQLite(unsigned id)
 {
 	RemoveBanOperation *remove = new RemoveBanOperation(id);
 	remove->RunAndDeleteObject();
@@ -287,7 +287,7 @@ bool Database::RemoveBanFromSQLite(unsigned id)
 //    return true;
 }
 
-bool Database::Unban(gentity_t *ent, int id)
+bool OldUserDatabase::Unban(gentity_t *ent, int id)
 {
 	for (unsigned i = 0, len = bans_.size(); i < len; i++)
 	{
@@ -314,7 +314,7 @@ bool Database::Unban(gentity_t *ent, int id)
 	return false;
 }
 
-bool Database::ListBans(gentity_t *ent, int page)
+bool OldUserDatabase::ListBans(gentity_t *ent, int page)
 {
 	const int BANS_PER_PAGE = 10;
 	// 0-19, 20-39
@@ -348,7 +348,7 @@ bool Database::ListBans(gentity_t *ent, int page)
 	return true;
 }
 
-bool Database::IsBanned(std::string const& guid, std::string const& hwid)
+bool OldUserDatabase::IsBanned(std::string const& guid, std::string const& hwid)
 {
 	for (unsigned i = 0; i < bans_.size(); i++)
 	{
@@ -361,7 +361,7 @@ bool Database::IsBanned(std::string const& guid, std::string const& hwid)
 	return false;
 }
 
-bool Database::IsIpBanned(std::string const& ip)
+bool OldUserDatabase::IsIpBanned(std::string const& ip)
 {
 	for (unsigned i = 0; i < bans_.size(); i++)
 	{
@@ -373,7 +373,7 @@ bool Database::IsIpBanned(std::string const& ip)
 	return false;
 }
 
-bool Database::BanUser(std::string const& name, std::string const& guid, std::string const& hwid, std::string const& ip,
+bool OldUserDatabase::BanUser(std::string const& name, std::string const& guid, std::string const& hwid, std::string const& ip,
                        std::string const& bannedBy, std::string const& banDate, unsigned expires, std::string const& reason)
 {
 	Ban newBan(new Ban_s);
@@ -409,7 +409,7 @@ bool Database::BanUser(std::string const& name, std::string const& guid, std::st
 	return true;
 }
 
-bool Database::UserExists(unsigned id)
+bool OldUserDatabase::UserExists(unsigned id)
 {
 	ConstIdIterator user = GetUserConst(id);
 	if (user != IdIterEnd())
@@ -419,14 +419,14 @@ bool Database::UserExists(unsigned id)
 	return false;
 }
 
-void Database::NewName(int id, std::string const& name)
+void OldUserDatabase::NewName(int id, std::string const& name)
 {
 	SaveNameOperation *op = new SaveNameOperation(name, id);
 	op->RunAndDeleteObject();
 	return;
 }
 
-bool Database::UpdateUser(gentity_t *ent, int id, std::string const& commands, std::string const& greeting, std::string const& title, int updated)
+bool OldUserDatabase::UpdateUser(gentity_t *ent, int id, std::string const& commands, std::string const& greeting, std::string const& title, int updated)
 {
 	IdIterator user = GetUser(id);
 	if (user != IdIterEnd())
@@ -451,19 +451,19 @@ bool Database::UpdateUser(gentity_t *ent, int id, std::string const& commands, s
 	return false;
 }
 
-void Database::ListUserNames(gentity_t *ent, int id)
+void OldUserDatabase::ListUserNames(gentity_t *ent, int id)
 {
 	ListUserNamesOperation *listUserNamesOperation = new ListUserNamesOperation(ent, id);
 	listUserNamesOperation->RunAndDeleteObject();
 }
 
-void Database::FindUser(gentity_t *ent, std::string const& user)
+void OldUserDatabase::FindUser(gentity_t *ent, std::string const& user)
 {
 	FindUserOperation *findUserOperation = new FindUserOperation(ent, user);
 	findUserOperation->RunAndDeleteObject();
 }
 
-bool Database::UpdateLastSeenToSQLite(User user)
+bool OldUserDatabase::UpdateLastSeenToSQLite(User user)
 {
 	UpdateLastSeenOperation *updateLastSeenOperation = new UpdateLastSeenOperation(user);
 	updateLastSeenOperation->RunAndDeleteObject();
@@ -487,7 +487,7 @@ bool Database::UpdateLastSeenToSQLite(User user)
 //    return true;
 }
 
-bool Database::UpdateLastSeen(int id, int lastSeen)
+bool OldUserDatabase::UpdateLastSeen(int id, int lastSeen)
 {
 	IdIterator user = GetUser(id);
 	if (user != IdIterEnd())
@@ -511,7 +511,7 @@ bool Database::UpdateLastSeen(int id, int lastSeen)
 	return false;
 }
 
-bool Database::SetLevel(int id, int level)
+bool OldUserDatabase::SetLevel(int id, int level)
 {
 	IdIterator user = GetUser(id);
 	if (user != IdIterEnd())
@@ -530,7 +530,7 @@ bool Database::SetLevel(int id, int level)
 	return false;
 }
 
-bool Database::Save(User user, unsigned updated)
+bool OldUserDatabase::Save(User user, unsigned updated)
 {
 	AsyncSaveUserOperation *op = new AsyncSaveUserOperation(user, updated);
 	op->RunAndDeleteObject();
@@ -646,12 +646,12 @@ bool Database::Save(User user, unsigned updated)
 //    return true;
 }
 
-bool Database::Save(IdIterator user, unsigned updated)
+bool OldUserDatabase::Save(IdIterator user, unsigned updated)
 {
 	return Save(*user, updated);
 }
 
-bool Database::AddNewHWIDToDatabase(User user)
+bool OldUserDatabase::AddNewHWIDToDatabase(User user)
 {
 	sqlite3_stmt *stmt = NULL;
 	int          rc    = 0;
@@ -681,7 +681,7 @@ bool Database::AddNewHWIDToDatabase(User user)
 	return true;
 }
 
-bool Database::AddNewHardwareId(int id, std::string const& hwid)
+bool OldUserDatabase::AddNewHardwareId(int id, std::string const& hwid)
 {
 	IdIterator user = GetUser(id);
 
@@ -698,7 +698,7 @@ bool Database::AddNewHardwareId(int id, std::string const& hwid)
 	return false;
 }
 
-bool Database::AddUser(std::string const& guid, std::string const& hwid, std::string const& name)
+bool OldUserDatabase::AddUser(std::string const& guid, std::string const& hwid, std::string const& name)
 {
 	unsigned id = GetHighestFreeId();
 
@@ -732,14 +732,14 @@ bool Database::AddUser(std::string const& guid, std::string const& hwid, std::st
 	return true;
 }
 
-bool Database::CloseDatabase()
+bool OldUserDatabase::CloseDatabase()
 {
 	users_.clear();
 	bans_.clear();
 	return true;
 }
 
-User_s const *Database::GetUserData(unsigned id) const
+User_s const *OldUserDatabase::GetUserData(unsigned id) const
 {
 	ConstIdIterator user = GetUser(id);
 	if (user != IdIterEnd())
@@ -749,7 +749,7 @@ User_s const *Database::GetUserData(unsigned id) const
 	return NULL;
 }
 
-bool Database::CreateNamesTable()
+bool OldUserDatabase::CreateNamesTable()
 {
 	int  rc      = 0;
 	char *errMsg = NULL;
@@ -767,7 +767,7 @@ bool Database::CreateNamesTable()
 	return true;
 }
 
-bool Database::LoadBans()
+bool OldUserDatabase::LoadBans()
 {
 	int          rc    = 0;
 	sqlite3_stmt *stmt = NULL;
@@ -819,7 +819,7 @@ bool Database::LoadBans()
 	return true;
 }
 
-bool Database::LoadUsers()
+bool OldUserDatabase::LoadUsers()
 {
 	int          rc    = 0;
 	sqlite3_stmt *stmt = NULL;
@@ -874,7 +874,7 @@ bool Database::LoadUsers()
 	return true;
 }
 
-bool Database::CreateBansTable()
+bool OldUserDatabase::CreateBansTable()
 {
 	int  rc      = 0;
 	char *errMsg = NULL;
@@ -892,7 +892,7 @@ bool Database::CreateBansTable()
 	return true;
 }
 
-bool Database::CreateUsersTable()
+bool OldUserDatabase::CreateUsersTable()
 {
 	int  rc      = 0;
 	char *errMsg = NULL;
@@ -910,12 +910,12 @@ bool Database::CreateUsersTable()
 	return true;
 }
 
-std::string const Database::GetMessage() const
+std::string const OldUserDatabase::GetMessage() const
 {
 	return message_;
 }
 
-User_s const *Database::GetUserData(int id) const
+User_s const *OldUserDatabase::GetUserData(int id) const
 {
 	ConstIdIterator user = GetUser(id);
 	if (user != IdIterEnd())
@@ -925,7 +925,7 @@ User_s const *Database::GetUserData(int id) const
 	return NULL;
 }
 
-User_s const *Database::GetUserData(std::string const& guid) const
+User_s const *OldUserDatabase::GetUserData(std::string const& guid) const
 {
 	ConstGuidIterator user = GetUser(guid);
 	if (user != GuidIterEnd())
@@ -935,7 +935,7 @@ User_s const *Database::GetUserData(std::string const& guid) const
 	return NULL;
 }
 
-bool Database::InitDatabase(char const *config)
+bool OldUserDatabase::InitDatabase(char const *config)
 {
 	int rc = sqlite3_open(GetPath(config).c_str(), &db_);
 
@@ -970,31 +970,31 @@ bool Database::InitDatabase(char const *config)
 	return true;
 }
 
-Database::ConstIdIterator Database::IdIterEnd() const
+OldUserDatabase::ConstIdIterator OldUserDatabase::IdIterEnd() const
 {
 	return users_.get<0>().end();
 }
 
-Database::ConstGuidIterator Database::GuidIterEnd() const
+OldUserDatabase::ConstGuidIterator OldUserDatabase::GuidIterEnd() const
 {
 	return users_.get<1>().end();
 }
 
-Database::ConstGuidIterator Database::GetUserConst(std::string const& guid) const
+OldUserDatabase::ConstGuidIterator OldUserDatabase::GetUserConst(std::string const& guid) const
 {
 	return users_.get<1>().find(guid);
 }
 
-Database::InsertUserOperation::InsertUserOperation(User user)
+OldUserDatabase::InsertUserOperation::InsertUserOperation(User user)
 	: user_(user)
 {
 }
 
-Database::InsertUserOperation::~InsertUserOperation()
+OldUserDatabase::InsertUserOperation::~InsertUserOperation()
 {
 }
 
-void Database::InsertUserOperation::Execute()
+void OldUserDatabase::InsertUserOperation::Execute()
 {
 	if (!OpenDatabase(g_userConfig.string))
 	{
@@ -1036,16 +1036,16 @@ void Database::InsertUserOperation::Execute()
 	}
 }
 
-Database::InsertNewHardwareIdOperation::InsertNewHardwareIdOperation(User user)
+OldUserDatabase::InsertNewHardwareIdOperation::InsertNewHardwareIdOperation(User user)
 	: user_(user)
 {
 }
 
-Database::InsertNewHardwareIdOperation::~InsertNewHardwareIdOperation()
+OldUserDatabase::InsertNewHardwareIdOperation::~InsertNewHardwareIdOperation()
 {
 }
 
-void Database::InsertNewHardwareIdOperation::Execute()
+void OldUserDatabase::InsertNewHardwareIdOperation::Execute()
 {
 	if (!OpenDatabase(g_userConfig.string))
 	{
@@ -1079,15 +1079,15 @@ void Database::InsertNewHardwareIdOperation::Execute()
 	}
 }
 
-Database::AsyncSaveUserOperation::AsyncSaveUserOperation(User user, int updated) : user_(user), updated_(updated)
+OldUserDatabase::AsyncSaveUserOperation::AsyncSaveUserOperation(User user, int updated) : user_(user), updated_(updated)
 {
 }
 
-Database::AsyncSaveUserOperation::~AsyncSaveUserOperation()
+OldUserDatabase::AsyncSaveUserOperation::~AsyncSaveUserOperation()
 {
 }
 
-void Database::AsyncSaveUserOperation::Execute()
+void OldUserDatabase::AsyncSaveUserOperation::Execute()
 {
 	if (updated_ == Updated::NONE)
 	{
@@ -1218,17 +1218,17 @@ void Database::AsyncSaveUserOperation::Execute()
 	return;
 }
 
-Database::AddBanOperation::AddBanOperation(Ban ban)
+OldUserDatabase::AddBanOperation::AddBanOperation(Ban ban)
 	: ban_(ban)
 {
 
 }
 
-Database::AddBanOperation::~AddBanOperation()
+OldUserDatabase::AddBanOperation::~AddBanOperation()
 {
 }
 
-void Database::AddBanOperation::Execute()
+void OldUserDatabase::AddBanOperation::Execute()
 {
 	if (!OpenDatabase(g_userConfig.string))
 	{
@@ -1266,15 +1266,15 @@ void Database::AddBanOperation::Execute()
 	}
 }
 
-Database::RemoveBanOperation::RemoveBanOperation(int id) : id_(id)
+OldUserDatabase::RemoveBanOperation::RemoveBanOperation(int id) : id_(id)
 {
 }
 
-Database::RemoveBanOperation::~RemoveBanOperation()
+OldUserDatabase::RemoveBanOperation::~RemoveBanOperation()
 {
 }
 
-void Database::RemoveBanOperation::Execute()
+void OldUserDatabase::RemoveBanOperation::Execute()
 {
 	std::string op = "remove ban operation";
 	if (!OpenDatabase(g_userConfig.string))
@@ -1302,15 +1302,15 @@ void Database::RemoveBanOperation::Execute()
 	}
 }
 
-Database::UpdateLastSeenOperation::UpdateLastSeenOperation(User user) : user_(user)
+OldUserDatabase::UpdateLastSeenOperation::UpdateLastSeenOperation(User user) : user_(user)
 {
 }
 
-Database::UpdateLastSeenOperation::~UpdateLastSeenOperation()
+OldUserDatabase::UpdateLastSeenOperation::~UpdateLastSeenOperation()
 {
 }
 
-void Database::UpdateLastSeenOperation::Execute()
+void OldUserDatabase::UpdateLastSeenOperation::Execute()
 {
 	std::string op = "update last seen operation";
 	if (!OpenDatabase(g_userConfig.string))
@@ -1339,16 +1339,16 @@ void Database::UpdateLastSeenOperation::Execute()
 	}
 }
 
-Database::FindUserOperation::FindUserOperation(gentity_t *ent, std::string const& user)
+OldUserDatabase::FindUserOperation::FindUserOperation(gentity_t *ent, std::string const& user)
 	: ent_(ent), user_(user)
 {
 }
 
-Database::FindUserOperation::~FindUserOperation()
+OldUserDatabase::FindUserOperation::~FindUserOperation()
 {
 }
 
-void Database::FindUserOperation::Execute()
+void OldUserDatabase::FindUserOperation::Execute()
 {
 	std::string op = "find user operation";
 	if (!OpenDatabase(g_userConfig.string))
@@ -1402,15 +1402,15 @@ void Database::FindUserOperation::Execute()
 
 }
 
-Database::SaveNameOperation::SaveNameOperation(std::string const& name, int id) : name_(name), id_(id)
+OldUserDatabase::SaveNameOperation::SaveNameOperation(std::string const& name, int id) : name_(name), id_(id)
 {
 }
 
-Database::SaveNameOperation::~SaveNameOperation()
+OldUserDatabase::SaveNameOperation::~SaveNameOperation()
 {
 }
 
-void Database::SaveNameOperation::Execute()
+void OldUserDatabase::SaveNameOperation::Execute()
 {
 	std::string op = "save name operation";
 	if (!OpenDatabase(g_userConfig.string))
@@ -1441,15 +1441,15 @@ void Database::SaveNameOperation::Execute()
 	}
 }
 
-Database::ListUserNamesOperation::ListUserNamesOperation(gentity_t *ent, int id) : ent_(ent), id_(id)
+OldUserDatabase::ListUserNamesOperation::ListUserNamesOperation(gentity_t *ent, int id) : ent_(ent), id_(id)
 {
 }
 
-Database::ListUserNamesOperation::~ListUserNamesOperation()
+OldUserDatabase::ListUserNamesOperation::~ListUserNamesOperation()
 {
 }
 
-void Database::ListUserNamesOperation::Execute()
+void OldUserDatabase::ListUserNamesOperation::Execute()
 {
 	const std::string op = "list user names operation";
 	if (!OpenDatabase(g_userConfig.string))
@@ -1500,7 +1500,7 @@ void Database::ListUserNamesOperation::Execute()
 	}
 }
 
-int Database::ResetUsersWithLevel(int level)
+int OldUserDatabase::ResetUsersWithLevel(int level)
 {
 	IdIterator it  = users_.begin();
 	IdIterator end = IdIterEnd();
@@ -1520,15 +1520,15 @@ int Database::ResetUsersWithLevel(int level)
 	return resetedUsersCount;
 }
 
-Database::ResetUsersWithLevelOperation::ResetUsersWithLevelOperation(int level) : level_(level)
+OldUserDatabase::ResetUsersWithLevelOperation::ResetUsersWithLevelOperation(int level) : level_(level)
 {
 }
 
-Database::ResetUsersWithLevelOperation::~ResetUsersWithLevelOperation()
+OldUserDatabase::ResetUsersWithLevelOperation::~ResetUsersWithLevelOperation()
 {
 }
 
-void Database::ResetUsersWithLevelOperation::Execute()
+void OldUserDatabase::ResetUsersWithLevelOperation::Execute()
 {
 	std::string op = "Reset users with level -operation";
 	if (!OpenDatabase(g_userConfig.string))

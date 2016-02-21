@@ -6,7 +6,7 @@ class Levels;
 class Session;
 class Commands;
 class SaveSystem;
-class Database;
+class OldUserDatabase;
 class CustomMapVotes;
 class Motd;
 class Timerun;
@@ -21,7 +21,7 @@ struct Game
 	}
 
 	std::shared_ptr<Levels> levels;
-	std::shared_ptr<Database> database;
+	std::shared_ptr<OldUserDatabase> database;
 	std::shared_ptr<Session> session;
 	std::shared_ptr<Commands> commands;
 	std::shared_ptr<SaveSystem> saves;

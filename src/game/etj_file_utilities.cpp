@@ -5,7 +5,7 @@ extern "C" {
 #include "g_local.h"
 }
 
-void FileUtilities::replacePathSeparators(std::string& filepath)
+void ETJump::FileUtilities::replacePathSeparators(std::string& filepath)
 {
 	for (auto & c : filepath)
 	{
@@ -16,7 +16,7 @@ void FileUtilities::replacePathSeparators(std::string& filepath)
 	}
 }
 
-std::string FileUtilities::getPath(const std::string& file)
+std::string ETJump::FileUtilities::getPath(const std::string& file)
 {
 	char base[MAX_CVAR_VALUE_STRING] = "";
 	char game[MAX_CVAR_VALUE_STRING] = "";

@@ -13,6 +13,21 @@
       <UniqueIdentifier>{da3c5bbf-3923-4a82-a1ce-eba8184609a9}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Source Files\SQLiteCpp">
+      <UniqueIdentifier>{715688fe-8d2b-4ab2-92c1-3adfb7f34987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ETJump">
+      <UniqueIdentifier>{31d0ff48-6bd0-47dc-9dd8-a59bc6b9843b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ETJump">
+      <UniqueIdentifier>{6142672e-7fc9-4dad-8fef-858eb25614ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ETJump\Interfaces">
+      <UniqueIdentifier>{37587af6-ac56-4a8f-91e9-dd7448791bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ETJump\Data Access Objects">
+      <UniqueIdentifier>{12f8f72f-2e35-4db8-a5e2-23c47b3c9b03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg_animation.c">
@@ -186,9 +201,6 @@
     <ClCompile Include="commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="database.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="levels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -228,23 +240,44 @@
     <ClCompile Include="tokens.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="etj_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="etj_user_session.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="etj_game_client.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\SQLiteCpp\src\Backup.cpp">
+      <Filter>Source Files\SQLiteCpp</Filter>
     </ClCompile>
-    <ClCompile Include="etj_user_database.cpp">
+    <ClCompile Include="..\SQLiteCpp\src\Column.cpp">
+      <Filter>Source Files\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SQLiteCpp\src\Database.cpp">
+      <Filter>Source Files\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SQLiteCpp\src\Statement.cpp">
+      <Filter>Source Files\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SQLiteCpp\src\Transaction.cpp">
+      <Filter>Source Files\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="old_user_database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="etj_file_utilities.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ETJump</Filter>
+    </ClCompile>
+    <ClCompile Include="etj_game_client.cpp">
+      <Filter>Source Files\ETJump</Filter>
+    </ClCompile>
+    <ClCompile Include="etj_log.cpp">
+      <Filter>Source Files\ETJump</Filter>
+    </ClCompile>
+    <ClCompile Include="etj_main.cpp">
+      <Filter>Source Files\ETJump</Filter>
+    </ClCompile>
+    <ClCompile Include="etj_user_database.cpp">
+      <Filter>Source Files\ETJump</Filter>
+    </ClCompile>
+    <ClCompile Include="etj_user_session.cpp">
+      <Filter>Source Files\ETJump</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,9 +340,6 @@
     <ClInclude Include="session.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="database.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -352,20 +382,32 @@
     <ClInclude Include="tokens.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="etj_user_session.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="etj_game_client.hpp">
+    <ClInclude Include="old_user_database.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="etj_common.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="etj_user_database.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ETJump</Filter>
     </ClInclude>
     <ClInclude Include="etj_file_utilities.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ETJump</Filter>
+    </ClInclude>
+    <ClInclude Include="etj_game_client.hpp">
+      <Filter>Header Files\ETJump</Filter>
+    </ClInclude>
+    <ClInclude Include="etj_log.hpp">
+      <Filter>Header Files\ETJump</Filter>
+    </ClInclude>
+    <ClInclude Include="etj_user_database.hpp">
+      <Filter>Header Files\ETJump</Filter>
+    </ClInclude>
+    <ClInclude Include="etj_user_session.hpp">
+      <Filter>Header Files\ETJump</Filter>
+    </ClInclude>
+    <ClInclude Include="etj_iuser_authorization.hpp">
+      <Filter>Header Files\ETJump\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="etj_user_dao.hpp">
+      <Filter>Header Files\ETJump\Data Access Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

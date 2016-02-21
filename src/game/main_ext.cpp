@@ -4,7 +4,6 @@
 #include "commands.hpp"
 #include "save.hpp"
 #include "levels.hpp"
-#include "database.hpp"
 #include "custom_map_votes.hpp"
 #include "utilities.hpp"
 #include <boost/algorithm/string.hpp>
@@ -13,6 +12,7 @@
 #include "timerun.hpp"
 #include "map_statistics.hpp"
 #include "tokens.hpp"
+#include "old_user_database.hpp"
 
 Game game;
 
@@ -118,7 +118,7 @@ void RunFrame(int levelTime)
 void OnGameInit()
 {
 	game.levels         = std::make_shared<Levels>();
-	game.database       = std::make_shared<Database>();
+	game.database       = std::make_shared<OldUserDatabase>();
 	game.session        = std::make_shared<Session>(game.database.get());
 	game.commands       = std::make_shared<Commands>();
 	game.saves          = std::make_shared<SaveSystem>(game.session.get());

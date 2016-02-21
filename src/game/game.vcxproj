@@ -52,12 +52,12 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)pthread;D:\boost_1_57_0;$(SolutionDir)sqlite;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SQLiteCpp\include\;$(SolutionDir)pthread;D:\boost_1_57_0;$(SolutionDir)sqlite;$(IncludePath)</IncludePath>
     <TargetName>qagame_mp_x86</TargetName>
     <LibraryPath>C:\Users\haapa\Documents\GitHub\etjump\src\pthread;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\haapa\Documents\GitHub\etjump\src\sqlite;D:\boost_1_57_0;C:\Users\haapa\Documents\GitHub\etjump\src\pthread;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\haapa\Documents\GitHub\etjump\src\sqlite;D:\boost_1_57_0;C:\Users\haapa\Documents\GitHub\etjump\src\pthread;$(SolutionDir)SQLiteCpp\include\;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\haapa\Documents\GitHub\etjump\src\pthread;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -164,6 +164,11 @@
     <ClCompile Include="..\json\jsoncpp.cpp" />
     <ClCompile Include="..\sha-1\bg_sha.c" />
     <ClCompile Include="..\sha-1\sha1.c" />
+    <ClCompile Include="..\SQLiteCpp\src\Backup.cpp" />
+    <ClCompile Include="..\SQLiteCpp\src\Column.cpp" />
+    <ClCompile Include="..\SQLiteCpp\src\Database.cpp" />
+    <ClCompile Include="..\SQLiteCpp\src\Statement.cpp" />
+    <ClCompile Include="..\SQLiteCpp\src\Transaction.cpp" />
     <ClCompile Include="..\sqlite\sqlite3.c" />
     <ClCompile Include="async_operation.cpp" />
     <ClCompile Include="bg_animation.c" />
@@ -183,7 +188,8 @@
     <ClCompile Include="bg_tracemap.c" />
     <ClCompile Include="commands.cpp" />
     <ClCompile Include="custom_map_votes.cpp" />
-    <ClCompile Include="database.cpp" />
+    <ClCompile Include="etj_log.cpp" />
+    <ClCompile Include="old_user_database.cpp" />
     <ClCompile Include="etj_file_utilities.cpp" />
     <ClCompile Include="etj_game_client.cpp" />
     <ClCompile Include="etj_user_database.cpp" />
@@ -256,7 +262,10 @@
     <ClInclude Include="bg_public.h" />
     <ClInclude Include="commands.hpp" />
     <ClInclude Include="custom_map_votes.hpp" />
-    <ClInclude Include="database.hpp" />
+    <ClInclude Include="etj_iuser_authorization.hpp" />
+    <ClInclude Include="etj_log.hpp" />
+    <ClInclude Include="etj_user_dao.hpp" />
+    <ClInclude Include="old_user_database.hpp" />
     <ClInclude Include="etj_common.hpp" />
     <ClInclude Include="etj_file_utilities.hpp" />
     <ClInclude Include="etj_game_client.hpp" />

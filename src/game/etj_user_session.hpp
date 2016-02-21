@@ -1,7 +1,9 @@
 #pragma once
 #include <array>
+#include <memory>
 #include "etj_common.hpp"
 #include "etj_game_client.hpp"
+#include "etj_iuser_authorization.hpp"
 
 namespace ETJump
 {
@@ -11,7 +13,7 @@ namespace ETJump
 	class UserSession
 	{
 	public:
-		UserSession();
+		UserSession(IUserAuthorization *userAuthorization);
 
 		// saves the session data of all users
 		~UserSession();
@@ -42,10 +44,16 @@ namespace ETJump
 		// sends a guid request message to client
 		void requestGuid(int clientNum);
 
+		// checks what the user is allowed to do (admin commands etc.)
+		void authorizeUser(int clientNum);
+
 		static const int MAX_GAME_CLIENTS = 64;
 
 		// player sessions
-		std::array<GameClient, MAX_GAME_CLIENTS> _players;
+		std::array<std::unique_ptr<GameClient>, MAX_GAME_CLIENTS> _users;
+
+		// access to the user database for authorizing players
+		IUserAuthorization* _userAuthorization;
 	};
 }
 

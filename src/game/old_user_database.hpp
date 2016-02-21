@@ -53,11 +53,11 @@ struct Ban_s
 };
 
 class DatabaseOperation;
-class Database : public IAuthentication
+class OldUserDatabase : public IAuthentication
 {
 public:
-	Database();
-	~Database();
+	OldUserDatabase();
+	~OldUserDatabase();
 	typedef boost::shared_ptr<User_s> User;
 
 	typedef multi_index_container<

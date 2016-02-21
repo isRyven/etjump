@@ -16,12 +16,13 @@ namespace ETJump
 
 extern "C" void ETJump_initializeGame(int levelTime, int randomSeed, int restart)
 {
-	ETJump::userSession = std::unique_ptr<ETJump::UserSession>(new ETJump::UserSession());
-	ETJump::userDatabase = std::unique_ptr<ETJump::UserDatabase>(new ETJump::UserDatabase(FileUtilities::getPath(g_userConfig.string)));
+	ETJump::userDatabase = std::unique_ptr<ETJump::UserDatabase>(new ETJump::UserDatabase(ETJump::FileUtilities::getPath(g_userConfig.string)));
+	ETJump::userSession = std::unique_ptr<ETJump::UserSession>(new ETJump::UserSession(ETJump::userDatabase.get()));
 } 
 
 extern "C" void ETJump_runFrame(int levelTime)
 {
+	ETJump::userDatabase->printAsyncErrors();
 }
 
 extern "C" void ETJump_shutdownGame(int restart)

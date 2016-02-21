@@ -6,8 +6,12 @@ extern "C" {
 
 
 
-ETJump::UserSession::UserSession()
+ETJump::UserSession::UserSession(IUserAuthorization *userAuthorization): _userAuthorization(userAuthorization)
 {
+	for (auto i = 0; i < MAX_GAME_CLIENTS; ++i)
+	{
+		_users[i] = std::unique_ptr<GameClient>(new GameClient(userAuthorization));
+	}
 }
 
 
@@ -34,7 +38,8 @@ ETJump::Result ETJump::UserSession::authenticate(int clientNum)
 		trap_Argv(1, guid, sizeof(guid));
 		trap_Argv(2, hwid, sizeof(hwid));
 
-		_players[clientNum].authenticate(guid, hwid);
+		_users[clientNum]->authenticate((g_entities + clientNum)->client->pers.netname, guid, hwid);
+
 		authenticated.ok = true;
 	}
 
@@ -58,7 +63,8 @@ bool ETJump::UserSession::preAuthenticate(int clientNum)
 	std::string ipString = ip;
 	ipString = ipString.substr(0, ipString.find(":"));
 
-	_players[clientNum].preAuthenticate(ipString);
+	_users[clientNum]->preAuthenticate(ipString);
+	return true;
 }
 
 void ETJump::UserSession::disconnect(int clientNum)
@@ -99,14 +105,14 @@ ETJump::Result ETJump::UserSession::connect(int clientNum, bool firstTime)
 
 void ETJump::UserSession::saveSessionData(int clientNum)
 {
-	if (!_players[clientNum].authenticated())
+	if (!_users[clientNum]->authenticated())
 	{
 		// no need to save anything if there's nothing to save
 		return;
 	}
 
 	auto sessionId = boost::format(SESSION_ID_TEMPLATE) % clientNum;
-	trap_Cvar_Set(sessionId.str().c_str(), _players[clientNum].sessionString().c_str());
+	trap_Cvar_Set(sessionId.str().c_str(), _users[clientNum]->sessionString().c_str());
 }
 
 void ETJump::UserSession::loadSession(int clientNum)
@@ -117,11 +123,15 @@ void ETJump::UserSession::loadSession(int clientNum)
 
 	trap_Cvar_VariableStringBuffer(va(SESSION_ID_TEMPLATE, clientNum), sessionString, sizeof(sessionString));
 
+	// We need to update name as it is not stored in the session
+	_users[clientNum]->updateName((g_entities + clientNum)->client->pers.netname);
+
 	// This could fail if map is changed before client managed to connect
 	// for the first time
 	// in such case we need to send the guid request again
-	if (!_players[clientNum].loadSession(sessionString))
+	if (!_users[clientNum]->loadSession(sessionString))
 	{
+		// name will be updated after guid is received..
 		requestGuid(clientNum);
 	}
 }
@@ -131,9 +141,8 @@ void ETJump::UserSession::resetSession(int clientNum)
 {
 	assert(clientNum >= 0 && clientNum < MAX_CLIENTS);
 
-	_players[clientNum] = GameClient();
+	_users[clientNum] = std::unique_ptr<GameClient>(new GameClient(_userAuthorization));
 }
-
 
 void ETJump::UserSession::requestGuid(int clientNum)
 {
@@ -141,7 +150,6 @@ void ETJump::UserSession::requestGuid(int clientNum)
 
 	trap_SendServerCommand(clientNum, GUID_REQUEST);
 }
-
 
 ETJump::UserSession::~UserSession()
 {
