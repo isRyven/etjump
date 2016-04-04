@@ -3417,8 +3417,6 @@ static void DrawLine(float x1, float y1, float x2, float y2, vec4_t color)
 #define SCREEN_CENTER_Y ((SCREEN_HEIGHT / 2) - 1)
 #define CGAZ3_ANG 20
 
-
-
 static void CG_DrawCGazHUD(void)
 {
 	float         vel_angle; // absolute velocity angle
@@ -3574,6 +3572,11 @@ static void CG_DrawCGazHUD(void)
 	// Dzikie Weze's 2D-CGaz
 	if (cg_drawCGaz.integer == 2)
 	{
+		float idealPos;
+		float maximumPos;
+		float minimumPos;
+		float accuracy;
+		int leftflag;
 		vel_relang = DEG2RAD(vel_relang);
 		per_angle  = DEG2RAD(per_angle);
 
@@ -3592,9 +3595,96 @@ static void CG_DrawCGazHUD(void)
 		DrawLine(SCREEN_CENTER_X, SCREEN_CENTER_Y,
 		         SCREEN_CENTER_X + vel_size * sin(vel_relang + per_angle),
 		         SCREEN_CENTER_Y - vel_size * cos(vel_relang + per_angle), colorRed);
+
 		DrawLine(SCREEN_CENTER_X, SCREEN_CENTER_Y,
 		         SCREEN_CENTER_X + vel_size * sin(vel_relang - per_angle),
 		         SCREEN_CENTER_Y - vel_size * cos(vel_relang - per_angle), colorRed);
+
+		float dx, dy, ex, ey, cx, cy, theta;
+		cx = SCREEN_CENTER_X + right;
+		cy = SCREEN_CENTER_Y - forward;
+
+		if (forward == 0) {
+			if (right > 0)
+			{	
+				idealPos = (1 * 180) + 0.8;
+				ex = SCREEN_CENTER_X + vel_size * sin(vel_relang + per_angle);
+				ey = SCREEN_CENTER_Y - vel_size * cos(vel_relang + per_angle);
+			}
+			else if (right < 0)
+			{
+				ex = SCREEN_CENTER_X + vel_size * sin(vel_relang - per_angle);
+				ey = SCREEN_CENTER_Y - vel_size * cos(vel_relang - per_angle);
+			}
+		}
+
+		if (forward > 0)
+		{
+			/* Forward handler */
+			if (right > 0) /* right strafe */
+			{
+				idealPos = (0.75 * 180) + 0.8;	
+				ex = SCREEN_CENTER_X + vel_size * sin(vel_relang + per_angle);
+				ey = SCREEN_CENTER_Y - vel_size * cos(vel_relang + per_angle);
+				maximumPos = (0.75 * 180) + 0.6;
+				minimumPos = maximumPos + 10;
+			}
+			else if (right < 0) /* left strafe */
+			{
+				idealPos = (0.25 * 180) - 0.8;
+				ex = SCREEN_CENTER_X + vel_size * sin(vel_relang - per_angle);
+				ey = SCREEN_CENTER_Y - vel_size * cos(vel_relang - per_angle);
+				maximumPos = (0.25 * 180) - 0.6;
+				minimumPos = maximumPos - 10;
+			}
+		}
+
+		dy = ey - cy;
+		dx = ex - cx;
+		theta = atan2(dy, dx); 
+		theta *= 180 / M_PI;
+
+		if (maximumPos < 0)
+			maximumPos *= -1;
+		if (minimumPos < 0)
+			minimumPos *= -1;
+		if (idealPos < 0)
+			idealPos *= -1;
+		if (theta < 0)
+			theta *= -1;
+		/*
+		if (right < 0) //When working with left side -> decrease
+		{
+			if (theta > idealPos && theta < maximumPos)
+			{
+				theta = idealPos - (maximumPos - theta); 
+			}
+			if (theta > maximumPos || theta < minimumPos)
+			{
+				theta = 0.0f;
+			}
+			accuracy = 1 - ((idealPos - theta) / (maximumPos - minimumPos)); //converting accuracy to a proper scale based on max and min
+		}
+		
+		if(right > 0) //When working with right side -> increase
+		{
+			if (theta < idealPos && theta > maximumPos)
+			{
+				theta = idealPos + (theta - maximumPos); 
+			}
+			if (theta < maximumPos || theta > minimumPos)
+			{
+				theta = 0.0f;
+			}
+			accuracy = 1 - ((theta - idealPos) / (minimumPos - maximumPos)); //converting accuracy to a proper scale based on max and min
+		}
+		*/
+		accuracy *= 100; // to percentages
+		if (right == 0 && forward == 0)
+		{
+			return;
+		}
+		Com_Printf("Accuracy: %f", theta);
 		return;
 	}
 
@@ -3702,7 +3792,6 @@ static void CG_DrawCGazHUD(void)
 	}
 
 }
-
 
 static qboolean CG_IsOverBounce(float vel, float initHeight,
                                 float finalHeight, float rintv,

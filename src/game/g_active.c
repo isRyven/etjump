@@ -1184,7 +1184,8 @@ void ClientThink_real(gentity_t *ent)
 		ucmd->wbuttons    = 0;
 		ucmd->doubleTap   = 0;
 
-		// freeze player (RELOAD_FAILED still allowed to move/look)
+		// freeze player (RE
+		_FAILED still allowed to move/look)
 		if (level.match_pause != PAUSE_NONE)
 		{
 			client->ps.pm_type = PM_FREEZE;
