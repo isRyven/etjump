@@ -2136,7 +2136,6 @@ bool SeenPlayer(gentity_t *ent, Arguments argv)
 {
 
 	char cleanName[MAX_NETNAME];
-	char actualName[MAX_NETNAME];
 
 	if (argv->size() != 2)
 	{
@@ -2144,8 +2143,7 @@ bool SeenPlayer(gentity_t *ent, Arguments argv)
 		return false;
 	}
 
-	strcpy(actualName, argv->at(1).c_str());
-	SanitizeString(actualName, cleanName, qfalse);
+	SanitizeConstString(argv->at(1).c_str(), cleanName, qfalse);
 	game.database->SeenPlayer(ent, cleanName);
 
 	return true;
