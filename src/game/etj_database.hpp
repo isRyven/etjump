@@ -132,6 +132,7 @@ public:
 	                const std::string& commands, const std::string& greeting,
 	                const std::string& title, int updated);
 	int ResetUsersWithLevel(int level);
+	void SeenPlayer(gentity_t *ent, const std::string& user);
 private:
 	unsigned GetHighestFreeId() const;
 
@@ -256,6 +257,17 @@ public:
 		~ResetUsersWithLevelOperation();
 private:
 		int level_;
+		void Execute();
+	};
+
+	class SeenPlayerOperation : public AsyncOperation
+	{
+public:
+		SeenPlayerOperation(gentity_t *ent, const std::string& user);
+		~SeenPlayerOperation();
+private:
+		gentity_t   *ent_;
+		std::string user_;
 		void Execute();
 	};
 };

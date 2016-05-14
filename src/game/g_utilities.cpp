@@ -721,6 +721,28 @@ string TimeStampToString(int t)
 	return std::string(buf);
 }
 
+string TimeStampToFormat(int t, char *format)
+{
+	char      buf[MAX_TOKEN_CHARS];
+	struct tm *lt = NULL;
+	time_t    toConvert = t;
+	lt = localtime(&toConvert);
+	if (t > 0)
+	{
+		if (format == "") {
+			format = "%d/%m/%y %H:%M:%S";
+		}
+
+		strftime(buf, sizeof(buf), format, lt);
+	}
+	else
+	{
+		return "never";
+	}
+
+	return std::string(buf);
+}
+
 std::string TimeStampDifferenceToString(int diff)
 {
 	const int MINUTE = 60;

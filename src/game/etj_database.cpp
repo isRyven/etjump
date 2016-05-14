@@ -732,6 +732,12 @@ bool Database::AddUser(std::string const& guid, std::string const& hwid, std::st
 	return true;
 }
 
+void Database::SeenPlayer(gentity_t *ent, std::string const& user)
+{
+	SeenPlayerOperation *seenPlayerOperation = new SeenPlayerOperation(ent, user);
+	seenPlayerOperation->RunAndDeleteObject();
+}
+
 bool Database::CloseDatabase()
 {
 	users_.clear();
@@ -1553,4 +1559,54 @@ void Database::ResetUsersWithLevelOperation::Execute()
 	{
 		return;
 	}
+}
+
+Database::SeenPlayerOperation::SeenPlayerOperation(gentity_t *ent, std::string const& user)
+	: ent_(ent), user_(user)
+{
+}
+
+Database::SeenPlayerOperation::~SeenPlayerOperation()
+{
+}
+
+void Database::SeenPlayerOperation::Execute()
+{
+	std::string op = "seen player operation";
+	if (!OpenDatabase(g_userConfig.string))
+	{
+		PrintOpenError(op);
+		return;
+	}
+
+	if (!PrepareStatement("SELECT users.lastSeen, name.name FROM name, users WHERE users.id = name.user_id AND clean_name LIKE '%' || ? || '%' LIMIT(1);"))
+	{
+		PrintPrepareError(op);
+		return;
+	}
+
+	if (!BindString(1, user_))
+	{
+		PrintBindError(op);
+		return;
+	}
+
+	sqlite3_stmt *stmt = GetStatement();
+
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+
+		int lastSeen = sqlite3_column_int(stmt, 0);
+		const char *playerName = (const char *)sqlite3_column_text(stmt, 1);
+
+		if (playerName == NULL) {
+			return;
+		}
+
+		ChatPrintAll(va("^3seen: ^7player %s ^7was last seen on %s.", playerName, TimeStampToFormat(lastSeen, "%d/%m/%y").c_str()));
+	
+	}
+	else {
+		ChatPrintAll("^3seen: ^7player was not found.");
+	}
+
 }

@@ -2132,6 +2132,25 @@ bool UserInfo(gentity_t *ent, Arguments argv)
 	return true;
 }
 
+bool SeenPlayer(gentity_t *ent, Arguments argv)
+{
+
+	char cleanName[MAX_NETNAME];
+	char actualName[MAX_NETNAME];
+
+	if (argv->size() != 2)
+	{
+		ChatPrintTo(ent, "^3usage: ^7!seen <name>");
+		return false;
+	}
+
+	strcpy(actualName, argv->at(1).c_str());
+	SanitizeString(actualName, cleanName, qfalse);
+	game.database->SeenPlayer(ent, cleanName);
+
+	return true;
+
+}
 
 
 }
@@ -2185,6 +2204,7 @@ Commands::Commands()
 	adminCommands_["unban"]    = AdminCommandPair(AdminCommands::Unban, CommandFlags::BAN);
 	adminCommands_["unmute"]   = AdminCommandPair(AdminCommands::Unmute, CommandFlags::MUTE);
 	adminCommands_["userinfo"] = AdminCommandPair(AdminCommands::UserInfo, CommandFlags::EDIT);
+	adminCommands_["seen"]     = AdminCommandPair(AdminCommands::SeenPlayer, CommandFlags::BASIC);
 
 	commands_["backup"] = ClientCommands::BackupLoad;
 	commands_["save"]   = ClientCommands::Save;

@@ -2560,7 +2560,8 @@ static const struct Manual commandManuals[] = {
 	{ "setlevel",     "!setlevel [target] [level]\n!setlevel -id [id] [level]",                                                                                                                         "Sets the target's admin level."                                                     },
 	{ "unban",        "!unban [ban ID]",                                                                                                                                                                "Unbans a player based on ban ID"                                                    },
 	{ "unmute",       "!unmute [target]",                                                                                                                                                               "Unmutes target player."                                                             },
-	{ "userinfo",     "!userinfo -id [id]",                                                                                                                                                             "Prints user info."                                                                  }
+	{ "userinfo",     "!userinfo -id [id]",                                                                                                                                                             "Prints user info."                                                                  },
+	{ "seen",         "!seen [name]",                                                                                                                                                                   "Prints player's last seen date."                                                    },
 };
 
 #endif
