@@ -1,5 +1,6 @@
 #include "etj_database.hpp"
 #include "utilities.hpp"
+#include "printer.hpp"
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -1592,8 +1593,6 @@ void Database::SeenPlayerOperation::Execute()
 	}
 
 	sqlite3_stmt *stmt = GetStatement();
-	BufferPrinter printer(ent_);
-	printer.Begin();
 
 	if (sqlite3_step(stmt) == SQLITE_ROW) {
 
@@ -1604,13 +1603,11 @@ void Database::SeenPlayerOperation::Execute()
 			return;
 		}
 
-		//Printer::BroadcastChatMessage(const std::string &message)
-		ChatPrintAll((boost::format("^3seen: ^7player %s ^7was last seen on %s.") % playerName % TimeStampToFormat(lastSeen, "%d/%m/%y").c_str()).str(), true);
+		Printer::BroadcastChatMessage((boost::format("^3seen: ^7player %s ^7was last seen on %s.") % playerName % TimeStampToFormat(lastSeen, "%d/%m/%y").c_str()).str());
+	
 	}	
 	else {
-		ChatPrintAll("^3seen: ^7player was not found.", true);
+		Printer::BroadcastChatMessage("^3seen: ^7player was not found.");
 	}
-
-	printer.Finish(false);
 
 }
