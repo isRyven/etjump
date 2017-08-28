@@ -3810,7 +3810,7 @@ namespace ETJump {
 	const vec4_t SaveForbidColor{ 1.0f, 0.2f, 0.2f, 1.f };
 	const auto SaveIconSize = 20.f;
 
-	static void DrawSaveIcon(float x, float y)
+	static void drawSaveIcon(float x, float y)
 	{
 		trap_R_SetColor(SaveShadowColor);
 		CG_DrawPic(x + 1, y + 1, SaveIconSize, SaveIconSize, cgs.media.saveIcon);
@@ -3819,7 +3819,7 @@ namespace ETJump {
 		trap_R_SetColor(nullptr);
 	}
 
-	static void DrawNoSaveIcon(float x, float y)
+	static void drawNoSaveIcon(float x, float y)
 	{
 		trap_R_SetColor(SaveForbidColor);
 		CG_DrawPic(x, y, SaveIconSize, SaveIconSize, cgs.media.noSaveIcon);
@@ -3853,26 +3853,26 @@ static void CG_DrawSaveIndicator(void)
 	{
 		if (trace.fraction != 1.0) {
 			if (etj_drawSaveIndicator.integer != 2) {
-				ETJump::DrawSaveIcon(x, y);
+				ETJump::drawSaveIcon(x, y);
 			}
 		}
 		else {
 			if (etj_drawSaveIndicator.integer != 3) {
-				ETJump::DrawSaveIcon(x, y);
-				ETJump::DrawNoSaveIcon(x, y);
+				ETJump::drawSaveIcon(x, y);
+				ETJump::drawNoSaveIcon(x, y);
 			}
 		}
 	} else
 	{
 		if (trace.fraction != 1.0) {
 			if (etj_drawSaveIndicator.integer != 2) {
-				ETJump::DrawSaveIcon(x, y);
-				ETJump::DrawNoSaveIcon(x, y);
+				ETJump::drawSaveIcon(x, y);
+				ETJump::drawNoSaveIcon(x, y);
 			}
 		}
 		else {
 			if (etj_drawSaveIndicator.integer != 3) {
-				ETJump::DrawSaveIcon(x, y);
+				ETJump::drawSaveIcon(x, y);
 			}
 		}
 	}
