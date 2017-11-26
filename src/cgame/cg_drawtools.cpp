@@ -392,12 +392,12 @@ void CG_DrawChar(int x, int y, int width, int height, int ch)
 		return;
 	}
 
-	auto font = &cgs.media.limboFont2;
+	auto font = &cgs.media.limboFont2_lo;
 	auto glyph = &font->glyphs[ch];
-	auto scalex = height / 65.f * font->glyphScale;
-	auto scaley = height / 65.f * font->glyphScale;
-	auto adj = scaley * glyph->top + 2.f;
-	auto ax = x + 1;
+	auto scalex = width / 38.f * font->glyphScale;
+	auto scaley = height / 52.f * font->glyphScale;
+	auto adj = scaley * glyph->top;
+	auto ax = x;
 	auto ay = y + height;
 	
 	CG_Text_PaintChar_Ext(ax, ay - adj, glyph->imageWidth, glyph->imageHeight, scalex, scaley, glyph->s, glyph->t, glyph->s2, glyph->t2, glyph->glyph);
