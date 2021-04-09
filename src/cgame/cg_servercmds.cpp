@@ -142,6 +142,9 @@ void CG_ParseServerinfo(void)
 
 	// TTimo - make this available for ingame_callvote
 	trap_Cvar_Set("cg_ui_voteFlags", Info_ValueForKey(info, "voteFlags"));
+
+	cgs.fixedphysics    = atoi(Info_ValueForKey(info, "g_fixedphysics"));
+	cgs.fixedphysicsfps = atoi(Info_ValueForKey(info, "g_fixedphysicsfps"));
 }
 
 /*

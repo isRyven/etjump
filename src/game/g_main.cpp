@@ -292,9 +292,13 @@ vmCvar_t g_debugTrackers;
 vmCvar_t g_debugTimeruns;
 vmCvar_t g_spectatorVote;
 vmCvar_t g_enableVote;
+vmCvar_t g_fixedphysics;
+vmCvar_t g_fixedphysicsfps;
 
 cvarTable_t gameCvarTable[] =
 {
+	{ &g_fixedphysics,                    "g_fixedphysics",                    "1",                          CVAR_ARCHIVE | CVAR_SERVERINFO,                  0, qfalse, qfalse },
+	{ &g_fixedphysicsfps,                 "g_fixedphysicsfps",                 "125",                        CVAR_ARCHIVE | CVAR_SERVERINFO,                  0, qfalse, qfalse },
 	// don't override the cheat state set by the system
 	{ &g_cheats,                    "sv_cheats",                   "",                                                       0,                                               qfalse },
 

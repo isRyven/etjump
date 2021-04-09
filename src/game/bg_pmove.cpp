@@ -21,6 +21,21 @@
 
 #define PM_IsSinglePlayerGame() (PM_GameType == GT_SINGLE_PLAYER || PM_GameType == GT_COOP)
 
+#ifdef CGAMEDLL
+#define PM_FIXEDPHYSICS         cgs.fixedphysics
+#define PM_FIXEDPHYSICSFPS      cgs.fixedphysicsfps
+#define PM_PRONEDELAY           cgs.pronedelay
+
+#else
+extern vmCvar_t g_fixedphysics;
+extern vmCvar_t g_fixedphysicsfps;
+extern vmCvar_t g_pronedelay;
+
+#define PM_FIXEDPHYSICS         g_fixedphysics.integer
+#define PM_FIXEDPHYSICSFPS      g_fixedphysicsfps.integer
+#define PM_PRONEDELAY           g_pronedelay.integer
+
+#endif
 namespace ETJump
 {
 	static const int JUMP_DELAY_TIME = 850;
@@ -7034,9 +7049,49 @@ void PmoveSingle(pmove_t *pmove)
 	PM_WaterEvents();
 
 
+	if (PM_FIXEDPHYSICS)
+	{
+		// halt if not going fast enough (0.5 units/sec)
+		if (VectorLengthSquared(pm->ps->velocity) < 0.25f)
+		{
+			VectorClear(pm->ps->velocity);
+		}
+		else
+		{
+			float fixedFrameTime, scale, decimalTest;
+			float result = 0;
+			int   fps    = PM_FIXEDPHYSICSFPS;
+
+			if (fps > 333)
+			{
+				fps = 333;
+			}
+			else if (fps < 30)
+			{
+				fps = 30;
+			}
+
+			fixedFrameTime = (int)(1000.0f / fps) * 0.001f;
+			decimalTest    = pm->ps->gravity * fixedFrameTime;
+
+			if (rint(decimalTest) - decimalTest < 0)
+			{
+				scale  = fixedFrameTime / pml.frametime;
+				result = (rint(decimalTest) - decimalTest) * -1;
+				result = result / scale;
+			}
+
+			pm->ps->velocity[2] += result;
+		}
+	}
+	else
+	{
+		// snap some parts of playerstate to save network bandwidth
+		trap_SnapVector(pm->ps->velocity);
+	}
 
 	// snap some parts of playerstate to save network bandwidth
-	trap_SnapVector(pm->ps->velocity);
+	// trap_SnapVector(pm->ps->velocity);
 //	SnapVector( pm->ps->velocity );
 }
 
